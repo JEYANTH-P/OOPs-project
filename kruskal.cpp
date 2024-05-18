@@ -197,11 +197,13 @@ int main() {
             if (graph.camps.find(campNumber) != graph.camps.end()) {
                 cout<<"=====LOGGED IN=====\n";
                 int choice;
+                int needValue = 0;
                 do {
                     cout << "Menu:\n";
                     cout << "1) View nearby camps\n";
                     cout << "2) Add cost between camps\n";
-                    cout << "3) Exit\n";
+                    cout << "3) Enter your needs \n";
+                    cout << "4) Exit\n";
                     cout << "Enter your choice: ";
                     cin >> choice;
 
@@ -222,15 +224,23 @@ int main() {
                         }
                         case 2: {
                             // Camp Head adds cost between camps
-                            int srcCampNumber, destCampNumber, cost;
+                            int srcCampNumber, destCampNumber, distance, waterLevel, needValue;
                             cout << "Enter the source camp number: ";
                             cin >> srcCampNumber;
                             cout << "Enter the destination camp number: ";
                             cin >> destCampNumber;
-                            cout << "Enter the cost: ";
-                            cin >> cost;
+                            cout << "Enter the inbetween distance: ";
+                            cin >> distance;
+                            cout << "Enter the inbetween water level: ";
+                            cin >> waterLevel;
+                            
 
                             try {
+                                int needValueFactor = 10000;
+                                int waterLevelFactor = 100;
+                                int distanceFactor = 10;
+
+                                int cost = INT32_MAX - (needValue * needValueFactor) + (waterLevel * waterLevelFactor) + (distance * distanceFactor);
                                 graph.addEdge(srcCampNumber, destCampNumber, cost, true);
                                 cout << "Cost added successfully between camp " << srcCampNumber << " and camp " << destCampNumber << "\n";
                             } catch (const std::invalid_argument& e) {
@@ -238,14 +248,18 @@ int main() {
                             }
                             break;
                         }
-                        case 3:
+                        case 3:{
+                            cout << "Enter the need value: ";
+                            cin >> needValue;
+                        }
+                        case 4:
                             cout << "Exiting Camp Head...\n";
                             break;
                         default:
                             cout << "Invalid choice!\n";
                             break;
                     }
-                } while (choice != 3);
+                } while (choice != 4);
             } else {
                 cout << "Invalid camp number!\n";
             }
