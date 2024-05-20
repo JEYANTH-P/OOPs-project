@@ -20,6 +20,7 @@ public:
     string address;
     string contact;
     vector<pair<string, int>> resources;
+    int needValue;
 
     Camp() : number(0), name(""), address(""), contact("") {} // default constructor
 
@@ -311,11 +312,18 @@ int main() {
                                 cin >> waterLevel;
 
                                 try {
-                                    int needValueFactor = 10000;
+                                    int needValueFactor = 1000;
                                     int waterLevelFactor = 100;
                                     int distanceFactor = 10;
 
-                                    int cost = INT32_MAX - (needValue * needValueFactor) + (waterLevel * waterLevelFactor) + (distance * distanceFactor);
+                                     // Get the need values of the source and destination camps
+                                    int srcNeedValue = graph.camps[srcCampNumber].needValue;
+                                    int destNeedValue = graph.camps[destCampNumber].needValue;
+
+                                    // Calculate the average need value
+                                    int averageNeedValue = (srcNeedValue + destNeedValue) / 2.0;
+
+                                    int cost = (INT32_MAX/2) - (needValue * averageNeedValue) + (waterLevel * waterLevelFactor) + (distance * distanceFactor);
                                     graph.addEdge(srcCampNumber, destCampNumber, cost, true);
                                     cout << "Cost added successfully between camp " << srcCampNumber << " and camp " << destCampNumber << "\n";
                                 } catch (const std::invalid_argument& e) {
@@ -326,6 +334,7 @@ int main() {
                             case 3: {
                                 cout << "Enter the need value: ";
                                 cin >> needValue;
+                                graph.camps[campNumber].needValue = needValue;
                                 break;
                             }
                             case 4:
